@@ -11,7 +11,11 @@ itemsAll.querySelector('.item:nth-child(5)').before(itemsAll.querySelector('.ite
 
 title[2].replaceWith(title[4]);
 
-title[3].replaceWith('This и прототипы объектов');
+const h2 = document.createElement('h2');
+const newTitle = document.createTextNode('This и прототипы объектов');
+h2.append(newTitle);
+
+title[3].replaceWith(h2);
 title[5].replaceWith(title[2].cloneNode(true));
 propsList[4].before(title[5].cloneNode(true));
 
@@ -23,3 +27,5 @@ propsList[2].append(propsList[5].children[8]);
 const cloneItem = propsList[4].cloneNode(true);
 propsList[4].replaceWith(propsList[3].cloneNode(true));
 propsList[3].replaceWith(cloneItem);
+
+document.querySelector('.ads').remove();
