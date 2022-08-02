@@ -297,15 +297,44 @@ const data = [
             }
         });
 
-        setTimeout(() => {
+        /*setTimeout(() => {
             const contact = createRow({
                 name: 'Наталья',
                 surname: 'Хомусько',
                 phone: '+79876543222',
             });
             list.append(contact);
-        }, 2000);
-    }
-    
+        }, 2000);*/
+        
+        const sortTable = (i) => {
+            let sorted = [...allRow].sort(function (a, b) {
+                if (a.children[i].innerHTML >= b.children[i].innerHTML) {
+                    return 1;
+                } else {
+                    return -1;
+                };
+            });
+            list.innerHTML = '';
+            for (let tr of sorted) {
+                list.appendChild(tr);
+            };
+        };
+
+        const thead = document.querySelector('thead');
+        const thName = thead.querySelector('th:nth-child(2)');
+        thName.className = 'thName';
+        const thSurname = thead.querySelector('th:nth-child(3)');
+        thSurname.className = 'thSurname';
+            thead.addEventListener('click', e => {
+            const target = e.target;
+            if (target.classList.contains('thName')) {
+                sortTable(1)
+            }
+            else if (target.classList.contains('thSurname')){
+                sortTable(2)
+            };
+        });
+    };
+
     window.phoneBookInit = init;
-}
+};
