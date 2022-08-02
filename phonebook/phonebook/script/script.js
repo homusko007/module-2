@@ -195,6 +195,7 @@ const data = [
             list: table.tbody,
             logo,
             btnAdd: buttonGroup.btns[0],
+            btnDel: buttonGroup.btns[1],
             formOverlay: form.overlay,
             form: form.form,
         };
@@ -202,6 +203,7 @@ const data = [
 
     const createRow = ({ name: firstName, surname, phone }) => { // деструктуризация объекта с данными
         const tr = document.createElement('tr');
+        tr.classList.add('contact');
 
         const tdDel = document.createElement('td');
         tdDel.classList.add('delete');
@@ -256,7 +258,14 @@ const data = [
         const app = document.querySelector(selectorApp);
         const phoneBook = renderPhoneBook(app, title);
 
-        const { list, logo, btnAdd, formOverlay, form } = phoneBook;
+        const {
+            list,
+            logo,
+            btnAdd,
+            formOverlay,
+            form,
+            btnDel,
+        } = phoneBook;
         //Функционал
         const allRow = renderContacts(list, data);
 
@@ -266,15 +275,37 @@ const data = [
             formOverlay.classList.add('is-visible');
         });
 
-        form.addEventListener('click', event => {
-            event.stopPropagation();
-        })
 
-        formOverlay.addEventListener('click', () => {
-            formOverlay.classList.remove('is-visible')
+        formOverlay.addEventListener('click', (e) => {
+            const target = e.target;
+            if (target === formOverlay ||
+                target.classList.contains('close')) {
+                formOverlay.classList.remove('is-visible');
+            }
         });
 
-    };
+        btnDel.addEventListener('click', () => {
+            document.querySelectorAll('.delete').forEach(del => {
+                del.classList.toggle('is-visible');
+            });
+        });
 
+        list.addEventListener('click', e => {
+            const target = e.target;
+            if (target.closest('.del-icon')) {
+                target.closest('.contact').remove();
+            }
+        });
+
+        setTimeout(() => {
+            const contact = createRow({
+                name: 'Наталья',
+                surname: 'Хомусько',
+                phone: '+79876543222',
+            });
+            list.append(contact);
+        }, 2000);
+    }
+    
     window.phoneBookInit = init;
 }
