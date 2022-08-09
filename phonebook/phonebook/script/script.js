@@ -1,74 +1,38 @@
 'use strict';
 
-const data = [
-  {
-    name: 'Иван',
-    surname: 'Петров',
-    phone: '+79514545454',
-  },
-  {
-    name: 'Игорь',
-    surname: 'Семёнов',
-    phone: '+79999999999',
-  },
-  {
-    name: 'Семён',
-    surname: 'Иванов',
-    phone: '+79800252525',
-  },
-  {
-    name: 'Мария',
-    surname: 'Попова',
-    phone: '+79876543210',
-  },
-];
+const getStorage = (key) => (localStorage.getItem(key) ?
+    JSON.parse(localStorage.getItem(key)) : []);
 
-const newObj = {
-    name: 'Наталья',
-    surname: 'Хомусько',
-    phone: '+79872554646',
-  };
+   const n = getStorage('storageData');
+   console.log(n);
 
-  localStorage.setItem('storageData', JSON.stringify(data));
-   
-  const getStorage = (key) => {
-    let storage;
-    if (localStorage.getItem(key)) {
-      storage = JSON.parse(localStorage.getItem(key));
-    } else {
-      storage = [];
-    }
-    return storage;
-   };
-
-  getStorage('storageData');
-  
-  const setStorage = (key, obj) => {
+const setStorage = (key, obj) => {
+    const data = getStorage(key);
     data.push(obj);
     console.log(data);
     localStorage.setItem(key, JSON.stringify(data));
-  };
-  setStorage('storageData', newObj);
+};
 
-  const removeStorage = (number) => {
-    const k = getStorage('storageData');
-    k.forEach(el => {
-      for (const key in el) {
-        if (el[key] === number) {
-          const index = k.indexOf(el);
-          k.splice(index, 1);
-          console.log(k);
-          localStorage.setItem('storageData', JSON.stringify(k));
-        }
+
+const removeStorage = (number) => {
+  const k = getStorage('storageData');
+  k.forEach(el => {
+    for (const key in el) {
+      if (el[key] === number) {
+        const index = k.indexOf(el);
+        k.splice(index, 1);
+        console.log(k);
+        setStorage(k);
       }
-    });
-  };
-  removeStorage('+79999999999');
+    }
+  });
+};
 
 {
   const addContactData = (contact) => {
-    data.push(contact);
-   };
+     getStorage('storageData');
+     setStorage('storageData', contact);
+  };
 
   const createContainer = () => {
     const container = document.createElement('div');
@@ -358,6 +322,7 @@ const newObj = {
 
   const init = (selectorApp, title) => {
     const app = document.querySelector(selectorApp);
+    const data = getStorage('storageData');
 
     const {
       list,
@@ -375,39 +340,6 @@ const newObj = {
     hoverRow(allRow, logo);
     deleteControl(btnDel, list);
     formControl(form, list, closeModal);
-
-
-    const thead = document.querySelector('thead');
-    const thName = thead.querySelector('th:nth-child(2)');
-    thName.className = 'thName';
-    const thSurname = thead.querySelector('th:nth-child(3)');
-    thSurname.className = 'thSurname';
-
-
-    const sortTable = (i) => {
-      const sorted = [...allRow].sort((a, b) => {
-        if (a.children[i].innerHTML >= b.children[i].innerHTML) {
-          return 1;
-        } else {
-          return -1;
-        }
-      });
-      list.innerHTML = '';
-      for (const tr of sorted) {
-        list.appendChild(tr);
-      }
-    };
-
-    thead.addEventListener('click', e => {
-      const target = e.target;
-
-      if (target.classList.contains('thName')) {
-        sortTable(1);
-      } else if (target.classList.contains('thSurname')) {
-        sortTable(2);
-      }
-      //localStorage.setItem('storedData', JSON.stringify());
-    });
   };
 
   window.phoneBookInit = init;
