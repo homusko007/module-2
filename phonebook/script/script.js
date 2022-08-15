@@ -1,13 +1,8 @@
 import {getStorage} from './modules/serviseStorage.js';
 import render from './modules/render.js';
-import control from './modules/control.js';
+import {modalControl, deleteControl, formControl} from './modules/control.js';
 
 const {renderPhoneBook, renderContacts} = render;
-const {
-  modalControl,
-  deleteControl,
-  formControl,
-} = control;
 
 const init = (selectorApp, title) => {
   const app = document.querySelector(selectorApp);
@@ -30,4 +25,5 @@ const init = (selectorApp, title) => {
 };
 
 window.phoneBookInit = init;
+
 
